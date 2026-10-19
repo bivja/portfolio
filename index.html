@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Веб-разработчик | Портфолио</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+        background-color: #0a0a0a; 
+        color: #ffffff; 
+        font-family: 'Inter', sans-serif; 
+        line-height: 1.6; 
+        overflow-x: hidden; 
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    a { text-decoration: none; color: inherit; }
+    
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .flex { display: flex; }
+    .flex-col { display: flex; flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .grid { display: grid; }
+    .gap-4 { gap: 16px; }
+    .gap-8 { gap: 32px; }
+
+    .text-muted { color: #888888; }
+    .text-accent { color: #00e5ff; }
+    
+    h1, h2, h3, .font-display { font-family: 'Space Grotesk', sans-serif; font-weight: 500; letter-spacing: -0.5px; }
+
+    /* Фоновое свечение */
+    .ambient-light-1 {
+        position: absolute; top: -10%; left: -10%; width: 600px; height: 600px;
+        background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, rgba(10, 10, 10, 0) 70%);
+        border-radius: 50%; z-index: -1; pointer-events: none;
+    }
+    .ambient-light-2 {
+        position: absolute; bottom: -10%; right: -10%; width: 500px; height: 500px;
+        background: radial-gradient(circle, rgba(112, 0, 255, 0.08) 0%, rgba(10, 10, 10, 0) 70%);
+        border-radius: 50%; z-index: -1; pointer-events: none;
+    }
+
+    /* Навигация (Стекло) */
+    nav { 
+        position: fixed; top: 0; width: 100%; z-index: 50; 
+        background: rgba(10, 10, 10, 0.7); 
+        backdrop-filter: blur(20px); 
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+    }
+    .nav-inner { display: flex; justify-content: space-between; align-items: center; height: 80px; }
+    .logo { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+    
+    /* Кнопки */
+    .btn { 
+        display: inline-flex; align-items: center; justify-content: center;
+        padding: 14px 28px; border-radius: 8px; font-weight: 500; 
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+        cursor: pointer; border: none; font-size: 14px; 
+    }
+    .btn-primary { 
+        background: #00e5ff; color: #0a0a0a; 
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); 
+    }
+    .btn-primary:hover { 
+        background: #ffffff; 
+        transform: translateY(-2px); 
+        box-shadow: 0 0 30px rgba(0, 229, 255, 0.5); 
+    }
+    .btn-outline { 
+        border: 1px solid rgba(255,255,255,0.15); color: #ffffff; background: transparent; 
+    }
+    .btn-outline:hover { 
+        border-color: #00e5ff; color: #00e5ff;
+    }
+
+    /* Hero */
+    .hero { padding: 200px 0 120px; position: relative; }
+    .hero h1 { 
+        font-size: 56px; line-height: 1.05; font-weight: 600; 
+        margin-bottom: 24px; color: #ffffff; letter-spacing: -1.5px;
+    }
+    .hero p { font-size: 18px; color: #888888; margin-bottom: 48px; max-width: 600px; font-weight: 300; }
+    
+    /* Сетка проектов */
+    .section-title { font-size: 36px; margin-bottom: 16px; }
+    
+    .portfolio-grid { display: grid; grid-template-columns: 1fr; gap: 32px; margin-top: 48px; }
+    
+    .project-card {
+        background: #121212; border: 1px solid rgba(255,255,255,0.05); 
+        border-radius: 16px; overflow: hidden; 
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex; flex-direction: column;
+    }
+    .project-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(0, 229, 255, 0.4);
+        box-shadow: 0 20px 40px -10px rgba(0, 229, 255, 0.15);
+    }
+    
+    .project-img { width: 100%; height: 240px; object-fit: cover; border-bottom: 1px solid rgba(255,255,255,0.05); filter: brightness(0.9); transition: filter 0.4s; }
+    .project-card:hover .project-img { filter: brightness(1.1); }
+    
+    .project-info { padding: 32px; flex-grow: 1; display: flex; flex-direction: column; }
+    .project-info h3 { font-size: 24px; margin-bottom: 12px; color: #fff; }
+    .project-info p { font-size: 15px; color: #888; margin-bottom: 24px; flex-grow: 1; }
+    .project-link { color: #00e5ff; font-weight: 500; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; transition: gap 0.3s; }
+    .project-card:hover .project-link { gap: 12px; }
+
+    /* Футер */
+    footer { padding: 64px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; margin-top: 120px; }
+    
+    /* Адаптив */
+    @media (min-width: 768px) {
+        .hero h1 { font-size: 76px; }
+        .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+        .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+</style>
+</head>
+<body>
+
+<div class="ambient-light-1"></div>
+<div class="ambient-light-2"></div>
+
+<!-- Навигация -->
+<nav>
+    <div class="container nav-inner">
+        <div class="logo">DEV<span class="text-accent">.PORTFOLIO</span></div>
+        <div class="flex gap-4">
+            <a href="#projects" class="btn btn-outline" style="padding: 10px 20px; font-size: 13px;">Проекты</a>
+            <a href="#contact" class="btn btn-primary" style="padding: 10px 20px; font-size: 13px;">Связаться</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Главный экран -->
+<section class="hero">
+    <div class="container">
+        <h1>Создаю сайты,<br>которые <span class="text-accent">продают.</span></h1>
+        <p>Привет! Я веб-разработчик. Делаю современные, быстрые и адаптивные сайты для бизнеса. Без конструкторов, только чистый код и премиальный дизайн.</p>
+        <div class="flex gap-4" style="flex-wrap: wrap;">
+            <a href="#contact" class="btn btn-primary">Заказать сайт</a>
+            <a href="#projects" class="btn btn-outline">Мои работы</a>
+        </div>
+    </div>
+</section>
+
+<!-- Проекты -->
+<section id="projects" style="padding: 80px 0; position: relative;">
+    <div class="container">
+        <h2 class="section-title">Избранные работы</h2>
+        <p class="text-muted">Реальные примеры того, что я умею делать.</p>
+
+        <div class="portfolio-grid">
+            <!-- Проект 1 -->
+            <a href="ССЫЛКА_НА_ТВОЙ_САЙТ_АВТОСЕРВИСА" target="_blank" class="project-card">
+                <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=800&auto=format&fit=crop" alt="Автосервис" class="project-img">
+                <div class="project-info">
+                    <h3>SHIKO Auto</h3>
+                    <p>Премиальный лендинг для автосервиса. Темная тема, золотые акценты, форма заявки.</p>
+                    <span class="project-link">Смотреть сайт &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Проект 2 -->
+            <a href="ССЫЛКА_НА_ТВОЙ_САЙТ_МАГАЗИНА_ПК" target="_blank" class="project-card">
+                <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?q=80&w=800&auto=format&fit=crop" alt="Магазин ПК" class="project-img">
+                <div class="project-info">
+                    <h3>CYBERPC</h3>
+                    <p>Интернет-магазин компьютерной техники. Стиль киберпанк, неон, стекло.</p>
+                    <span class="project-link">Смотреть сайт &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Проект 3 -->
+            <a href="ССЫЛКА_НА_ТВОЙ_САЙТ_СПА" target="_blank" class="project-card">
+                <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop" alt="СПА-салон" class="project-img">
+                <div class="project-info">
+                    <h3>Aura SPA</h3>
+                    <p>Сайт премиального спа-салона. Светлый минимализм, шрифты с засечками.</p>
+                    <span class="project-link">Смотреть сайт &rarr;</span>
+                </div>
+            </a>
+            
+            <!-- Проект 4 -->
+            <a href="ССЫЛКА_НА_ТВОЙ_САЙТ_БАРБЕРШОПА" target="_blank" class="project-card">
+                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=800&auto=format&fit=crop" alt="Барбершоп" class="project-img">
+                <div class="project-info">
+                    <h3>BARBER Club</h3>
+                    <p>Дерзкий сайт для мужского барбершопа. Огромная типографика, контурный текст.</p>
+                    <span class="project-link">Смотреть сайт &rarr;</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Контакты -->
+<section id="contact" style="padding: 120px 0; position: relative;">
+    <div class="container" style="max-width: 600px; text-align: center;">
+        <h2 class="section-title">Готовы обсудить проект?</h2>
+        <p class="text-muted" style="margin-bottom: 40px;">Напишите мне в Telegram или оставьте заявку, и я свяжусь с вами в ближайшее время.</p>
+        
+        <a href="https://t.me/ВАШ_НИК_В_ТЕЛЕГРАМ" target="_blank" class="btn btn-primary" style="font-size: 18px; padding: 18px 40px;">Написать в Telegram</a>
+        
+        <p style="margin-top: 24px; font-size: 14px; color: #555;">Или на почту: <a href="mailto:вашапочта@mail.ru" style="color: #00e5ff;">вашапочта@mail.ru</a></p>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <div class="logo" style="margin-bottom: 16px; color: #fff;">DEV<span class="text-accent">.PORTFOLIO</span></div>
+        <p class="text-muted" style="font-size: 14px;">© 2026. Все права защищены.</p>
+    </div>
+</footer>
+
+</body>
+</html>
